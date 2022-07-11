@@ -7,5 +7,5 @@ import org.springframework.boot.runApplication
 class AdTeamApplication
 
 fun main(args: Array<String>) {
-	runApplication<AdTeamApplication>(*args)
+    runApplication<AdTeamApplication>(*args)
 }
