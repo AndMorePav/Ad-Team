@@ -1,6 +1,6 @@
 package com.ad.adteam.service.impl
 
-import com.ad.adteam.domain.User
+import com.ad.adteam.domain.UserEntity
 import com.ad.adteam.exception.UserNotFoundException
 import com.ad.adteam.repository.UserRepository
 import com.ad.adteam.service.UserService
@@ -9,16 +9,16 @@ import org.springframework.stereotype.Service
 @Service
 class UserServiceImpl(private val userRepository: UserRepository) : UserService {
 
-    override fun getUsers(): List<User> = userRepository.findAll()
+    override fun getUsers(): List<UserEntity> = userRepository.findAll()
 
-    override fun getUser(userId: Long): User {
+    override fun getUser(userId: Long): UserEntity {
         return userRepository.findById(userId)
             .orElseThrow { UserNotFoundException(userId) }
     }
 
-    override fun createUser(user: User): User = userRepository.save(user)
+    override fun createUser(userEntity: UserEntity): UserEntity = userRepository.save(userEntity)
 
-    override fun updateUser(userId: Long, user: User): User {
+    override fun updateUser(userId: Long, userEntity: UserEntity): UserEntity {
         return userRepository.findById(userId)
             .orElseThrow { UserNotFoundException(userId) }
     }
