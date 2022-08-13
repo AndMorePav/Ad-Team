@@ -5,7 +5,7 @@ import javax.persistence.*
 @Entity
 class UserEntity(
         @Id
-        @GeneratedValue(strategy = GenerationType.SEQUENCE)
+        @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
         var id: Long = 0,
         val login: String,
         val name: String,

@@ -4,4 +4,5 @@ import com.ad.adteam.domain.AdEntity
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface AdRepository: JpaRepository<AdEntity, Long> {
+    fun findAllByAuthorId(userId: Long): List<AdEntity>
 }

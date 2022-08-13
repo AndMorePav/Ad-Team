@@ -3,7 +3,7 @@ package com.ad.adteam.dto
 import com.ad.adteam.domain.AdEntity
 
 data class UserDto(
-    val id: Long? = null,
+    val id: Long = 0,
     val login: String,
     val name: String,
     val surname: String,

@@ -32,11 +32,11 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
         val savedUserEntity: UserEntity = userRepository.save(
             UserEntity(
                 foundedUser.id,
-                login = userDto.login,
-                name = userDto.name,
-                surname = userDto.surname,
-                age = userDto.age,
-                phone = userDto.phone
+                userDto.login,
+                userDto.name,
+                userDto.surname,
+                userDto.age,
+                userDto.phone
             )
         )
         return savedUserEntity.toDto()

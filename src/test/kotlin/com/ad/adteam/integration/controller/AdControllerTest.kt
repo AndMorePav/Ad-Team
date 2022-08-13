@@ -1,8 +1,8 @@
 package com.ad.adteam.integration.controller
 
 import com.ad.adteam.controller.AdController
-import com.ad.adteam.domain.AdEntity
-import com.ad.adteam.domain.UserEntity
+import com.ad.adteam.dto.AdDto
+import com.ad.adteam.dto.UserDto
 import com.ad.adteam.service.AdService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.*
@@ -25,13 +25,13 @@ internal class AdControllerTest @Autowired constructor(
 ) {
 
     private val baseUrl = "/api/ads"
-    private val author = UserEntity(
+    private val author = UserDto(
         1, "test login", "test name",
         "test surname", 18, "test", emptyList()
     )
-    private val adEntityList = mutableListOf(
-        AdEntity(1, "test title", "test title", author),
-        AdEntity(1, "test title2", "test", author)
+    private val adDtoList = listOf(
+        AdDto(1, "test title", "test title", author.id),
+        AdDto(1, "test title2", "test", author.id)
     )
 
     @Nested
@@ -41,7 +41,7 @@ internal class AdControllerTest @Autowired constructor(
         @Test
         fun `should return all users ads`() {
             //given
-            Mockito.`when`(adService.getAdsByUser(anyLong())).thenReturn(adEntityList)
+            Mockito.`when`(adService.getAdsByUser(anyLong())).thenReturn(adDtoList)
             val userId = 1L
             //when/then
             mockMvc.get("$baseUrl/$userId")
@@ -61,11 +61,11 @@ internal class AdControllerTest @Autowired constructor(
         @Test
         fun `should create ad`() {
             //given
-            Mockito.`when`(adService.createAd(adEntityList[0])).thenReturn(adEntityList[0])
+            Mockito.`when`(adService.createAd(adDtoList[0])).thenReturn(adDtoList[0].id)
             //when
             val performPost = mockMvc.post(baseUrl) {
                 contentType = MediaType.APPLICATION_JSON
-                content = objectMapper.writeValueAsString(adEntityList[0])
+                content = objectMapper.writeValueAsString(adDtoList[0])
             }
             //then
             performPost
@@ -73,7 +73,7 @@ internal class AdControllerTest @Autowired constructor(
                     status { isCreated() }
                     content {
                         contentType(MediaType.APPLICATION_JSON)
-                        json(objectMapper.writeValueAsString(adEntityList[0]))
+                        json(objectMapper.writeValueAsString(adDtoList[0].id))
                     }
                 }
         }
@@ -86,7 +86,7 @@ internal class AdControllerTest @Autowired constructor(
         @Test
         fun `should update an existing ad`() {
             //given
-            val updatedAd = AdEntity(1, "Changed Test Title", "Changed Test Content", author)
+            val updatedAd = AdDto(1, "Changed Test Title", "Changed Test Content", 1L)
             Mockito.`when`(adService.updateAd(updatedAd)).thenReturn(updatedAd)
             //when
             val performPatch = mockMvc.patch(baseUrl) {
