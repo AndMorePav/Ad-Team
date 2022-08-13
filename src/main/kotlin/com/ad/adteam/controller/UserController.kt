@@ -1,6 +1,6 @@
 package com.ad.adteam.controller
 
-import com.ad.adteam.domain.UserEntity
+import com.ad.adteam.dto.UserDto
 import com.ad.adteam.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -17,10 +17,10 @@ class UserController(private val userService: UserService) {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun createUser(@RequestBody userEntity: UserEntity) = userService.createUser(userEntity)
+    fun createUser(@RequestBody userDto: UserDto) = userService.createUser(userDto)
 
     @PatchMapping("/{userId}")
-    fun updateUser(@PathVariable userId: Long, @RequestBody userEntity: UserEntity) = userService.updateUser(userId, userEntity)
+    fun updateUser(@PathVariable userId: Long, @RequestBody userDto: UserDto) = userService.updateUser(userId, userDto)
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

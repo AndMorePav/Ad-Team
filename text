@@ -1,0 +1,8 @@
+UserDto
+{
+  "login": "string",
+  "name": "string",
+  "surname": "string",
+  "age": 0,
+  "phone": "string"
+}

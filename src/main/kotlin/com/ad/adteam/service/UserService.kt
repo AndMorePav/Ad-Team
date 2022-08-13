@@ -1,16 +1,16 @@
 package com.ad.adteam.service
 
-import com.ad.adteam.domain.UserEntity
+import com.ad.adteam.dto.UserDto
 
 interface UserService {
 
-    fun getUsers(): List<UserEntity>
+    fun getUsers(): List<UserDto>
 
-    fun getUser(userId: Long): UserEntity
+    fun getUser(userId: Long): UserDto
 
-    fun createUser(userEntity: UserEntity): UserEntity
+    fun createUser(userDto: UserDto): Long
 
-    fun updateUser(userId: Long, userEntity: UserEntity): UserEntity
+    fun updateUser(userId: Long, userDto: UserDto): UserDto
 
     fun deleteUser(userId: Long)
 }
