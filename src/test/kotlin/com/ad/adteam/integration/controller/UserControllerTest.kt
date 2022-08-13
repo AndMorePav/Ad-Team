@@ -1,7 +1,7 @@
 package com.ad.adteam.integration.controller
 
 import com.ad.adteam.controller.UserController
-import com.ad.adteam.domain.User
+import com.ad.adteam.domain.UserEntity
 import com.ad.adteam.service.UserService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.*
@@ -25,15 +25,10 @@ internal class UserControllerTest @Autowired constructor(
 ) {
 
     private val baseUrl = "/api/users"
-    private val userList = mutableListOf(
-            User(1, "test", "test", "test", 18, "test"),
-            User(2, "test2", "test2", "test2", 18, "test2")
+    private val userEntityList = mutableListOf(
+            UserEntity(1, "test", "test", "test", 18, "test", emptyList()),
+            UserEntity(2, "test2", "test2", "test2", 18, "test2", emptyList())
     )
-
-    @BeforeEach
-    fun before() {
-        userList.add(User(1, "test", "test", "test", 18, "test"))
-    }
 
     @Nested
     @DisplayName("getUsers()")
@@ -42,7 +37,7 @@ internal class UserControllerTest @Autowired constructor(
         @Test
         fun `should return all users`() {
             //given
-            Mockito.`when`(userService.getUsers()).thenReturn(userList)
+            Mockito.`when`(userService.getUsers()).thenReturn(userEntityList)
             //when/then
             mockMvc.get(baseUrl)
                     .andExpect {
@@ -57,12 +52,12 @@ internal class UserControllerTest @Autowired constructor(
     @Nested
     @DisplayName("getUser()")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class GetUser {
+    inner class GetUserEntity {
         @Test
         fun `should return separate user`() {
             //given
             val userId = 1L
-            Mockito.`when`(userService.getUser(anyLong())).thenReturn(userList[0])
+            Mockito.`when`(userService.getUser(anyLong())).thenReturn(userEntityList[0])
             //when/then
             mockMvc.get("$baseUrl/$userId")
                     .andExpect {
@@ -76,15 +71,15 @@ internal class UserControllerTest @Autowired constructor(
     @Nested
     @DisplayName("createUser()")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class CreateUser {
+    inner class CreateUserEntity {
         @Test
         fun `should return created user`() {
             //given
-            Mockito.`when`(userService.createUser(userList[0])).thenReturn(userList[0])
+            Mockito.`when`(userService.createUser(userEntityList[0])).thenReturn(userEntityList[0])
             //when
             val performPost = mockMvc.post(baseUrl) {
                 contentType = MediaType.APPLICATION_JSON
-                content = objectMapper.writeValueAsString(userList[0])
+                content = objectMapper.writeValueAsString(userEntityList[0])
             }
             //then
             performPost
@@ -92,7 +87,7 @@ internal class UserControllerTest @Autowired constructor(
                         status { isCreated() }
                         content {
                             contentType(MediaType.APPLICATION_JSON)
-                            json(objectMapper.writeValueAsString(userList[0]))
+                            json(objectMapper.writeValueAsString(userEntityList[0]))
                         }
                     }
         }
@@ -101,17 +96,17 @@ internal class UserControllerTest @Autowired constructor(
     @Nested
     @DisplayName("updateUser()")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class UpdateUser {
+    inner class UpdateUserEntity {
         @Test
         fun `should update an existing user`() {
             //given
             val userId = 1L
-            val updatedUser = User(1, "updated", "updated", "updated", 18, "updated")
-            Mockito.`when`(userService.updateUser(userId, updatedUser)).thenReturn(updatedUser)
+            val updatedUserEntity = UserEntity(1, "updated", "updated", "updated", 18, "updated",emptyList())
+            Mockito.`when`(userService.updateUser(userId, updatedUserEntity)).thenReturn(updatedUserEntity)
             //when
             val performPatch = mockMvc.patch("$baseUrl/$userId") {
                 contentType = MediaType.APPLICATION_JSON
-                content = objectMapper.writeValueAsString(updatedUser)
+                content = objectMapper.writeValueAsString(updatedUserEntity)
             }
             //then
             performPatch
@@ -119,7 +114,7 @@ internal class UserControllerTest @Autowired constructor(
                         status { isOk() }
                         content {
                             contentType(MediaType.APPLICATION_JSON)
-                            json(objectMapper.writeValueAsString(updatedUser))
+                            json(objectMapper.writeValueAsString(updatedUserEntity))
                         }
                     }
         }
@@ -128,7 +123,7 @@ internal class UserControllerTest @Autowired constructor(
         fun `should return BAD_REQUEST when user doesn't exist`() {
             //given
             val userId = -1L
-            Mockito.`when`(userService.updateUser(userId, userList[0])).thenThrow(IllegalArgumentException())
+            Mockito.`when`(userService.updateUser(userId, userEntityList[0])).thenThrow(IllegalArgumentException())
             //when/then
             mockMvc.patch("$baseUrl/$userId")
                     .andExpect {
@@ -141,7 +136,7 @@ internal class UserControllerTest @Autowired constructor(
     @DirtiesContext
     @DisplayName("DeleteUser()")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class DeleteUser {
+    inner class DeleteUserEntity {
         @Test
         fun `should delete the user with the given id`() {
             //given

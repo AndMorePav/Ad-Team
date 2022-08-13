@@ -1,16 +1,8 @@
 package com.ad.adteam.repository
 
-import com.ad.adteam.domain.User
-import org.springframework.stereotype.Repository
+import com.ad.adteam.domain.UserEntity
+import org.springframework.data.jpa.repository.JpaRepository
 
-@Repository
-interface UserRepository {
+interface UserRepository: JpaRepository<UserEntity, Long> {
 
-    fun getUsers(): List<User>
-
-    fun getUser(userId: Long): User
-
-    fun save(user: User): User
-
-    fun deleteUser(userId: Long)
 }
