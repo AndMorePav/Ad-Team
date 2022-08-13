@@ -24,6 +24,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 //	runtimeOnly("org.postgresql:postgresql")
 	implementation("com.h2database:h2:2.1.214")
+	implementation("io.springfox:springfox-swagger2:2.7.0")
+	implementation("io.springfox:springfox-swagger-ui:2.7.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

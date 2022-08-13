@@ -1,6 +1,6 @@
 package com.ad.adteam.controller
 
-import com.ad.adteam.domain.AdEntity
+import com.ad.adteam.dto.AdDto
 import com.ad.adteam.service.AdService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.*
 class AdController(private val adService: AdService) {
 
     @GetMapping("/{userId}")
-    fun getAdsByUser(@PathVariable userId: Long): List<AdEntity> = adService.getAdsByUser(userId)
+    fun getAdsByUser(@PathVariable userId: Long): List<AdDto> = adService.getAdsByUser(userId)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun createAd(@RequestBody adEntity: AdEntity): AdEntity = adService.createAd(adEntity)
+    fun createAd(@RequestBody adDto: AdDto): Long = adService.createAd(adDto)
 
     @PatchMapping
-    fun updateAd(@RequestBody adEntity: AdEntity) = adService.updateAd(adEntity)
+    fun updateAd(@RequestBody adDto: AdDto) = adService.updateAd(adDto)
 
     @DeleteMapping("/{adId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

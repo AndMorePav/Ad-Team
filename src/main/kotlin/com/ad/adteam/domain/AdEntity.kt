@@ -3,10 +3,10 @@ package com.ad.adteam.domain
 import javax.persistence.*
 
 @Entity
-data class AdEntity (
+class AdEntity (
     @Id
-    @GeneratedValue
-    var id: Long? = null,
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ad_id_seq")
+    var id: Long = 0,
     val title: String,
     val text: String,
     @ManyToOne

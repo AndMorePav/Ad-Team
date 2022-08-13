@@ -1,12 +1,13 @@
 package com.ad.adteam.service
 
-import com.ad.adteam.domain.AdEntity
+import com.ad.adteam.dto.AdDto
+
 
 interface AdService {
 
-    fun getAdsByUser(userId: Long): List<AdEntity>
-    fun createAd(adEntity: AdEntity): AdEntity
-    fun updateAd(adEntity: AdEntity): AdEntity
+    fun getAdsByUser(userId: Long): List<AdDto>
+    fun createAd(adDto: AdDto): Long
+    fun updateAd(adDto: AdDto): AdDto
     fun deleteAd(adId: Long)
 
 }
