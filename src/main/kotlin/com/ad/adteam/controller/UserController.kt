@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.*
 class UserController(private val userService: UserService) {
 
     @GetMapping
-    fun getUsers() = userService.getUsers()
+    fun getUsers(
+        @RequestParam("page", defaultValue = "0") pageIndex: Int,
+        @RequestParam("size", defaultValue = "10") pageSize: Int
+    ) = userService.getUsers(pageIndex, pageSize)
 
     @GetMapping("/{userId}")
     fun getUser(@PathVariable userId: Long) = userService.getUser(userId)
@@ -20,7 +23,8 @@ class UserController(private val userService: UserService) {
     fun createUser(@RequestBody userDto: UserDto) = userService.createUser(userDto)
 
     @PatchMapping("/{userId}")
-    fun updateUser(@PathVariable userId: Long, @RequestBody userDto: UserDto) = userService.updateUser(userId, userDto)
+    fun updateUser(@PathVariable userId: Long, @RequestBody userDto: UserDto) =
+        userService.updateUser(userId, userDto)
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

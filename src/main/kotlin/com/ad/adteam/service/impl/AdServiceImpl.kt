@@ -7,6 +7,7 @@ import com.ad.adteam.exception.UserNotFoundException
 import com.ad.adteam.repository.AdRepository
 import com.ad.adteam.repository.UserRepository
 import com.ad.adteam.service.AdService
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -16,9 +17,10 @@ class AdServiceImpl(
     private val userRepository: UserRepository
 ) : AdService {
 
-    override fun getAdsByUser(userId: Long): List<AdDto> {
-        return adRepository.findAllByAuthorId(userId)
-            .map { it.toDto() }
+    override fun getAdsByUser(userId: Long, pageIndex: Int, pageSize: Int): List<AdDto> {
+        return adRepository.findAllByAuthorIdOrderByTitle(
+            userId, PageRequest.of(pageIndex, pageSize)
+        ).map { it.toDto() }
     }
 
     override fun createAd(adDto: AdDto): Long {
