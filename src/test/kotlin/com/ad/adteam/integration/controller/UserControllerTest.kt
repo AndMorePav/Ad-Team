@@ -1,11 +1,11 @@
 package com.ad.adteam.integration.controller
 
 import com.ad.adteam.controller.UserController
-import com.ad.adteam.domain.UserEntity
 import com.ad.adteam.dto.UserDto
 import com.ad.adteam.service.UserService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.*
+import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -38,7 +38,7 @@ internal class UserControllerTest @Autowired constructor(
         @Test
         fun `should return all users`() {
             //given
-            Mockito.`when`(userService.getUsers()).thenReturn(userDtoList)
+            Mockito.`when`(userService.getUsers(anyInt(), anyInt())).thenReturn(userDtoList)
             //when/then
             mockMvc.get(baseUrl)
                     .andExpect {

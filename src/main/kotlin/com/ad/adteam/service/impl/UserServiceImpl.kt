@@ -5,13 +5,15 @@ import com.ad.adteam.dto.UserDto
 import com.ad.adteam.exception.UserNotFoundException
 import com.ad.adteam.repository.UserRepository
 import com.ad.adteam.service.UserService
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
 class UserServiceImpl(private val userRepository: UserRepository) : UserService {
 
-    override fun getUsers(): List<UserDto> = userRepository.findAll().map { it.toDto() }
+    override fun getUsers(pageIndex: Int, pageSize: Int): List<UserDto>
+    = userRepository.findByOrderByName(PageRequest.of(pageIndex, pageSize)).map { it.toDto() }
 
     override fun getUser(userId: Long): UserDto {
         return userRepository.findById(userId)

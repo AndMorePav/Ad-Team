@@ -9,8 +9,20 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/ads")
 class AdController(private val adService: AdService) {
 
+    @GetMapping
+    fun searchAds(
+        @RequestParam(defaultValue = "") textQuery: String,
+        @RequestParam("page", defaultValue = "0") pageIndex: Int,
+        @RequestParam("size", defaultValue = "10") pageSize: Int
+    ): List<AdDto> = adService.searchAds(textQuery, pageIndex, pageSize)
+
     @GetMapping("/{userId}")
-    fun getAdsByUser(@PathVariable userId: Long): List<AdDto> = adService.getAdsByUser(userId)
+    fun getAdsByUser(
+        @PathVariable userId: Long,
+        @RequestParam(required = false) textQuery: String?,
+        @RequestParam("page", defaultValue = "0") pageIndex: Int,
+        @RequestParam("size", defaultValue = "10") pageSize: Int
+    ): List<AdDto> = adService.getAdsByUser(userId, pageIndex, pageSize)
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

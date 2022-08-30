@@ -9,7 +9,6 @@ import com.ad.adteam.repository.UserRepository
 import com.ad.adteam.service.impl.AdServiceImpl
 import org.junit.jupiter.api.Assertions.*
 
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyLong

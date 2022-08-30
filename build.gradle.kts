@@ -6,6 +6,7 @@ plugins {
 	kotlin("jvm") version "1.6.21"
 	kotlin("plugin.spring") version "1.6.21"
 	kotlin("plugin.jpa") version "1.6.21"
+	kotlin("kapt") version "1.3.72"
 }
 
 group = "com.ad"
@@ -24,8 +25,9 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 //	runtimeOnly("org.postgresql:postgresql")
 	implementation("com.h2database:h2:2.1.214")
-	implementation("io.springfox:springfox-swagger2:2.7.0")
-	implementation("io.springfox:springfox-swagger-ui:2.7.0")
+	implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
+	implementation ("org.hibernate:hibernate-jpamodelgen:6.1.2.Final")
+	kapt("org.hibernate:hibernate-jpamodelgen:5.4.12.Final")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 

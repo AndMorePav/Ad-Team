@@ -6,6 +6,7 @@ import com.ad.adteam.dto.UserDto
 import com.ad.adteam.service.AdService
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.*
+import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito
 
@@ -41,7 +42,7 @@ internal class AdControllerTest @Autowired constructor(
         @Test
         fun `should return all users ads`() {
             //given
-            Mockito.`when`(adService.getAdsByUser(anyLong())).thenReturn(adDtoList)
+            Mockito.`when`(adService.getAdsByUser(anyLong(), anyInt(), anyInt())).thenReturn(adDtoList)
             val userId = 1L
             //when/then
             mockMvc.get("$baseUrl/$userId")

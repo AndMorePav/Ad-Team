@@ -4,7 +4,7 @@ import com.ad.adteam.dto.UserDto
 
 interface UserService {
 
-    fun getUsers(): List<UserDto>
+    fun getUsers(pageIndex: Int, pageSize: Int): List<UserDto>
 
     fun getUser(userId: Long): UserDto
 
