@@ -1,7 +1,6 @@
 package com.ad.adteam.service.impl
 
 import com.ad.adteam.domain.AdEntity
-import com.ad.adteam.domain.AdEntity_
 import com.ad.adteam.dto.AdDto
 import com.ad.adteam.exception.AdNotFoundException
 import com.ad.adteam.exception.UserNotFoundException
@@ -82,13 +81,13 @@ class AdServiceImpl(
             builder.or(
                 builder.like(
                     builder.lower(
-                        root.get(AdEntity_.title)
+                        root.get("title")
                     ), pattern(textQuery)
                 ),
                 builder.or(
                     builder.like(
                         builder.lower(
-                            root.get(AdEntity_.text)
+                            root.get("text")
                         ), pattern(textQuery)
                     )
                 )

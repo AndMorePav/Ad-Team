@@ -20,3 +20,7 @@ spring:
         use_sql_comments: true
         format_sql: true
         enable_lazy_load_no_trans: true
+
+app:
+  jwtExpirationMs: 76300000
+  jwtSecret: knowledgeFactory

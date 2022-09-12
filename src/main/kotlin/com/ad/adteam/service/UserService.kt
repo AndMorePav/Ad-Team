@@ -8,8 +8,6 @@ interface UserService {
 
     fun getUser(userId: Long): UserDto
 
-    fun createUser(userDto: UserDto): Long
-
     fun updateUser(userId: Long, userDto: UserDto): UserDto
 
     fun deleteUser(userId: Long)

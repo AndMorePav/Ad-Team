@@ -18,7 +18,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.*
 
 @WebMvcTest(AdController::class)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 internal class AdControllerTest @Autowired constructor(
     val mockMvc: MockMvc,
     val objectMapper: ObjectMapper,
@@ -27,7 +27,7 @@ internal class AdControllerTest @Autowired constructor(
 
     private val baseUrl = "/api/ads"
     private val author = UserDto(
-        1, "test login", "test name",
+        1, "test name",
         "test surname", 18, "test", emptyList()
     )
     private val adDtoList = listOf(

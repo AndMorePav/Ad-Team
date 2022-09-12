@@ -3,6 +3,7 @@ package com.ad.adteam.service.impl
 import com.ad.adteam.domain.UserEntity
 import com.ad.adteam.dto.UserDto
 import com.ad.adteam.exception.UserNotFoundException
+import com.ad.adteam.repository.AdRepository
 import com.ad.adteam.repository.UserRepository
 import com.ad.adteam.service.UserService
 import org.springframework.data.domain.PageRequest
@@ -10,10 +11,15 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class UserServiceImpl(private val userRepository: UserRepository) : UserService {
+class UserServiceImpl(
+    private val adRepository: AdRepository,
+    private val userRepository: UserRepository
+) : UserService {
 
-    override fun getUsers(pageIndex: Int, pageSize: Int): List<UserDto>
-    = userRepository.findByOrderByName(PageRequest.of(pageIndex, pageSize)).map { it.toDto() }
+    override fun getUsers(pageIndex: Int, pageSize: Int): List<UserDto> {
+        return userRepository.findByOrderByName(PageRequest.of(pageIndex, pageSize))
+            .map { it.toDto() }
+    }
 
     override fun getUser(userId: Long): UserDto {
         return userRepository.findById(userId)
@@ -21,49 +27,37 @@ class UserServiceImpl(private val userRepository: UserRepository) : UserService 
             .orElseThrow { UserNotFoundException(userId) }
     }
 
-    override fun createUser(userDto: UserDto): Long {
-        val savedUser = userRepository.save(userDto.toEntity())
-        return savedUser.id
-    }
-
     @Transactional
     override fun updateUser(userId: Long, userDto: UserDto): UserDto {
         val foundedUser = userRepository.findById(userId)
             .orElseThrow { UserNotFoundException(userId) }
 
+        foundedUser.name = userDto.name
+        foundedUser.surname = userDto.surname
+        foundedUser.age = userDto.age
+        foundedUser.phone = userDto.phone
+
         val savedUserEntity: UserEntity = userRepository.save(
-            UserEntity(
-                foundedUser.id,
-                userDto.login,
-                userDto.name,
-                userDto.surname,
-                userDto.age,
-                userDto.phone
-            )
+            foundedUser
         )
         return savedUserEntity.toDto()
     }
 
-    override fun deleteUser(userId: Long) = userRepository.deleteById(userId)
-
-    private fun UserDto.toEntity(): UserEntity =
-        UserEntity(
-            id = 0,
-            login = this.login,
-            name = this.name,
-            surname = this.surname,
-            age = this.age,
-            phone = this.phone
-        )
+    @Transactional
+    override fun deleteUser(userId: Long) {
+        val foundedUser = userRepository.findById(userId)
+            .orElseThrow { UserNotFoundException(userId) }
+        adRepository.deleteByAuthor(foundedUser)
+        userRepository.deleteById(userId)
+    }
 
     private fun UserEntity.toDto(): UserDto =
         UserDto(
             id = this.id,
-            login = this.login,
-            name = this.name,
-            surname = this.surname,
-            age = this.age,
-            phone = this.phone,
+            name = this.name!!,
+            surname = this.surname ?: "Undefined",
+            age = this.age ?: 0,
+            phone = this.phone!!,
             ads = this.ads
         )
 }
