@@ -18,10 +18,6 @@ class UserController(private val userService: UserService) {
     @GetMapping("/{userId}")
     fun getUser(@PathVariable userId: Long) = userService.getUser(userId)
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    fun createUser(@RequestBody userDto: UserDto) = userService.createUser(userDto)
-
     @PatchMapping("/{userId}")
     fun updateUser(@PathVariable userId: Long, @RequestBody userDto: UserDto) =
         userService.updateUser(userId, userDto)

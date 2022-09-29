@@ -18,7 +18,7 @@ import org.springframework.test.web.servlet.*
 
 
 @WebMvcTest(UserController::class)
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
 internal class UserControllerTest @Autowired constructor(
         val mockMvc: MockMvc,
         val objectMapper: ObjectMapper,
@@ -27,8 +27,8 @@ internal class UserControllerTest @Autowired constructor(
 
     private val baseUrl = "/api/users"
     private val userDtoList = mutableListOf(
-            UserDto(1, "test", "test", "test", 18, "test", emptyList()),
-            UserDto(2, "test2", "test2", "test2", 18, "test2", emptyList())
+            UserDto(1, "test",  "test", 18, "test", emptyList()),
+            UserDto(2, "test2",  "test2", 18, "test2", emptyList())
     )
 
     @Nested
@@ -44,8 +44,8 @@ internal class UserControllerTest @Autowired constructor(
                     .andExpect {
                         status { isOk() }
                         content { contentType(MediaType.APPLICATION_JSON) }
-                        jsonPath("$[0].login") { value("test") }
-                        jsonPath("$[1].login") { value("test2") }
+                        jsonPath("$[0].name") { value("test") }
+                        jsonPath("$[1].name") { value("test2") }
                     }
         }
     }
@@ -64,32 +64,7 @@ internal class UserControllerTest @Autowired constructor(
                     .andExpect {
                         status { isOk() }
                         content { contentType(MediaType.APPLICATION_JSON) }
-                        jsonPath("$.login") { value("test") }
-                    }
-        }
-    }
-
-    @Nested
-    @DisplayName("createUser()")
-    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class CreateUserEntity {
-        @Test
-        fun `should return created user`() {
-            //given
-            Mockito.`when`(userService.createUser(userDtoList[0])).thenReturn(userDtoList[0].id)
-            //when
-            val performPost = mockMvc.post(baseUrl) {
-                contentType = MediaType.APPLICATION_JSON
-                content = objectMapper.writeValueAsString(userDtoList[0])
-            }
-            //then
-            performPost
-                    .andExpect {
-                        status { isCreated() }
-                        content {
-                            contentType(MediaType.APPLICATION_JSON)
-                            json(objectMapper.writeValueAsString(userDtoList[0].id))
-                        }
+                        jsonPath("$.name") { value("test") }
                     }
         }
     }
@@ -102,7 +77,7 @@ internal class UserControllerTest @Autowired constructor(
         fun `should update an existing user`() {
             //given
             val userId = 1L
-            val updatedUserDto = UserDto(1, "updated", "updated", "updated", 18, "updated",emptyList())
+            val updatedUserDto = UserDto(1, "updated", "updated", 18, "updated",emptyList())
             Mockito.`when`(userService.updateUser(userId, updatedUserDto)).thenReturn(updatedUserDto)
             //when
             val performPatch = mockMvc.patch("$baseUrl/$userId") {

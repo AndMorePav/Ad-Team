@@ -20,9 +20,8 @@ internal class AdServiceImplTest {
     private val adRepository = Mockito.mock(AdRepository::class.java)
     private val userRepository = Mockito.mock(UserRepository::class.java)
     private val adService = AdServiceImpl(adRepository, userRepository)
-    private val updatedAdDto = AdDto(1, "Test Title", "Test text", 1L)
-    private val userEntity = UserEntity(1, "test", "test", "test", 18, "test", emptyList())
-    private val adEntity = AdEntity(1, "Test Title", "Test text", userEntity)
+    private val updatedAdDto = AdDto(1, "Test Title", "Test text", 0L)
+    private val adEntity = AdEntity(1, "Test Title", "Test text", UserEntity())
 
     @Test
     fun `should update ad entity`() {
